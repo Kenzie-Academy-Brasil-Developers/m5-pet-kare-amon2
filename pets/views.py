@@ -22,16 +22,12 @@ class PetsView(APIView):
 
 
 class PetsDetailView(APIView):
-    def patch(self, request: Request, pet_id: int) -> Response:
+    def get(self, request: Request, pet_id: int) -> Response:
         pet = get_object_or_404(Pet, id=pet_id)
-
-        pet = Pet.objects.all()
-
-        serializer = PetSerializer(pet, many=True)
-
+        serializer = PetSerializer(pet)
         return Response(serializer.data)
 
-    def get(self, request: Request, pet_id: int) -> Response:
+    def patch(self, request: Request, pet_id: int) -> Response:
         pet = get_object_or_404(Pet, id=pet_id)
 
         serializer = PetSerializer(pet, data=request.data, partial=True)

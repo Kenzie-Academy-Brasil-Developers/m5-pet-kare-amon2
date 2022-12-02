@@ -4,6 +4,7 @@ from traits.serializers import TraitSerializer
 from traits.models import Trait
 from groups.models import Group
 from pets.models import PetSex, Pet
+import ipdb
 
 
 class PetSerializer(serializers.Serializer):
@@ -31,8 +32,13 @@ class PetSerializer(serializers.Serializer):
         return pet_obj
 
     def update(self, instance: Pet, validated_data: dict):
-        for key, value in validated_data.items():
-            setattr(instance, key, value)
-        instance.save()
+        group_dic = validated_data.pop("group")
+        # traits_list = validated_data.pop("traits")
+        # ipdb.set_trace()
+        group_obj, created = Group.objects.get_or_create(
+            scientific_name=group_dic["scientific_name"],
+        )
+
+        instance.group = group_obj
 
         return instance
