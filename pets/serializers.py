@@ -32,13 +32,25 @@ class PetSerializer(serializers.Serializer):
         return pet_obj
 
     def update(self, instance: Pet, validated_data: dict):
-        group_dic = validated_data.pop("group")
-        # traits_list = validated_data.pop("traits")
-        # ipdb.set_trace()
-        group_obj, created = Group.objects.get_or_create(
-            scientific_name=group_dic["scientific_name"],
-        )
+        list = []
+        traits_list = validated_data.pop("traits", None)
+        if traits_list:
+            for trait_dict in traits_list:
+                trait_obj, created = Trait.objects.get_or_create(**trait_dict)
+                list.append(trait_obj)
 
-        instance.group = group_obj
+            # trait_dict, created = Trait.objects.get_or_create(
+            #     name=traits_list,
+            # )
+
+            instance.traits.set(list)
+
+        group_dic = validated_data.pop("group", None)
+        if group_dic:
+            group_obj, created = Group.objects.get_or_create(
+                scientific_name=group_dic["scientific_name"],
+            )
+
+            instance.group = group_obj
 
         return instance
