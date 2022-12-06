@@ -53,6 +53,6 @@ class PetSerializer(serializers.Serializer):
 
             instance.group = group_obj
 
-        for key, value in instance.items():
-            setattr()
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
         return instance
