@@ -53,4 +53,6 @@ class PetSerializer(serializers.Serializer):
 
             instance.group = group_obj
 
+        for key, value in instance.items():
+            setattr()
         return instance
