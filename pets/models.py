@@ -17,6 +17,8 @@ class Pet(models.Model):
         default="Not Informed",
     )
     group = models.ForeignKey(
-        "groups.Group", on_delete=models.CASCADE, related_name="pets"
+        "groups.Group",
+        on_delete=models.CASCADE,
+        related_name="pets",
     )
     traits = models.ManyToManyField("traits.Trait", related_name="pets")
